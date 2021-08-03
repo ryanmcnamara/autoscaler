@@ -37,11 +37,15 @@ func ExpanderStrategyFromStrings(expanderFlags []string, cloudProvider cloudprov
 	configNamespace string) (expander.Strategy, errors.AutoscalerError) {
 	var filters []expander.Filter
 	seenExpanders := map[string]struct{}{}
-	for _, expanderFlag := range expanderFlags {
+	uniqueOptionExpanderSeen := false
+	for i, expanderFlag := range expanderFlags {
 		if _, ok := seenExpanders[expanderFlag]; ok {
 			return nil, errors.NewAutoscalerError(errors.InternalError, "Expander %s was specified multiple times, each expander must not be specified more than once", expanderFlag)
 		}
 		seenExpanders[expanderFlag] = struct{}{}
+		if uniqueOptionExpanderSeen {
+			return nil, errors.NewAutoscalerError(errors.InternalError, "Expander %s came after an expander %s that must always return only one result, this is not allowed", expanderFlag, expanderFlags[i-1])
+		}
 
 		switch expanderFlag {
 		case expander.RandomExpanderName:
@@ -66,6 +70,8 @@ func ExpanderStrategyFromStrings(expanderFlags []string, cloudProvider cloudprov
 		default:
 			return nil, errors.NewAutoscalerError(errors.InternalError, "Expander %s not supported", expanderFlag)
 		}
+		newExpander := filters[len(filters)-1]
+		uniqueOptionExpanderSeen = newExpander.AlwaysUniqueOption()
 	}
 	return newChainStrategy(filters, random.NewStrategy()), nil
 }

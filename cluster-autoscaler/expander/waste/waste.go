@@ -32,6 +32,10 @@ func NewFilter() expander.Filter {
 	return &leastwaste{}
 }
 
+func (l *leastwaste) AlwaysUniqueOption() bool {
+	return false
+}
+
 // BestOption Finds the option that wastes the least fraction of CPU and Memory
 func (l *leastwaste) BestOptions(expansionOptions []expander.Option, nodeInfo map[string]*schedulerframework.NodeInfo) []expander.Option {
 	var leastWastedScore float64

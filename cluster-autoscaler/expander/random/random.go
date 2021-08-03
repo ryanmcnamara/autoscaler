@@ -36,6 +36,10 @@ func NewStrategy() expander.Strategy {
 	return &random{}
 }
 
+func (r *random) AlwaysUniqueOption() bool {
+	return true
+}
+
 // BestOptions selects from the expansion options at random
 func (r *random) BestOptions(expansionOptions []expander.Option, nodeInfo map[string]*schedulerframework.NodeInfo) []expander.Option {
 	best := r.BestOption(expansionOptions, nodeInfo)

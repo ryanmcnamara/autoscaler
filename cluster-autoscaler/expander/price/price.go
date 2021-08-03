@@ -86,6 +86,10 @@ func NewFilter(cloudProvider cloudprovider.CloudProvider,
 	}
 }
 
+func (p *priceBased) AlwaysUniqueOption() bool {
+	return false
+}
+
 // BestOption selects option based on cost and preferred node type.
 func (p *priceBased) BestOptions(expansionOptions []expander.Option, nodeInfos map[string]*schedulerframework.NodeInfo) []expander.Option {
 	var bestOptions []expander.Option

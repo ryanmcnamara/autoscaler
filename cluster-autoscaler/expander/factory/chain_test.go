@@ -38,6 +38,10 @@ func (s *substringTestFilterStrategy) BestOption(expansionOptions []expander.Opt
 	return &ret[0]
 }
 
+func (s *substringTestFilterStrategy) AlwaysUniqueOption() bool {
+	return false
+}
+
 func TestChainStrategy_BestOption(t *testing.T) {
 	for name, tc := range map[string]struct {
 		filters  []expander.Filter

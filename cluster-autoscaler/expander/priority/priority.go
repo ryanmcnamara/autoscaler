@@ -58,6 +58,10 @@ func NewFilter(configMapLister v1lister.ConfigMapNamespaceLister,
 	return res
 }
 
+func (p *priority) AlwaysUniqueOption() bool {
+	return false
+}
+
 func (p *priority) reloadConfigMap() (priorities, *apiv1.ConfigMap, error) {
 	cm, err := p.configMapLister.Get(PriorityConfigMapName)
 	if err != nil {

@@ -54,4 +54,5 @@ type Strategy interface {
 // Filter describes an interface for filtering to equally good options according to some criteria
 type Filter interface {
 	BestOptions(options []Option, nodeInfo map[string]*schedulerframework.NodeInfo) []Option
+	AlwaysUniqueOption() bool
 }
